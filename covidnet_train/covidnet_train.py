@@ -17,7 +17,11 @@ sys.path.append(os.path.dirname(__file__))
 # import the Chris app superclass
 from chrisapp.base import ChrisApp
 import subprocess
-
+from bs4 import BeautifulSoup
+import requests, urllib
+from urllib.request import urlopen
+from urllib.parse import urlparse
+import tarfile
 
 Gstr_title = """
 
@@ -120,6 +124,26 @@ class Covidnet_train(ChrisApp):
     # output directory.
     OUTPUT_META_DICT = {}
 
+    def download_data(self, url, dest_dir):
+        links = []
+        html = urlopen(url).read()
+        html_page = BeautifulSoup(html, features="lxml")
+        og_url = html_page.find("meta",  property = "og:url")
+        base = urlparse(url)
+        print("base",base)
+        for link in html_page.find_all('a'):
+            current_link = link.get('href')
+            print(current_link)
+            if current_link.endswith('.tar.gz'):
+                if og_url:
+                    print("currentLink",current_link)
+                    links.append(og_url["content"] + current_link)
+                else:
+                    links.append(base.scheme + "://" + base.netloc + current_link)
+
+        for link in links:
+            os.system('wget ' + link + ' -P ' + dest_dir)
+
     def define_parameters(self):
         """
         Define the CLI arguments accepted by this plugin app.
@@ -137,10 +161,22 @@ class Covidnet_train(ChrisApp):
 
         if options.mode == "covidx":
             covidnet_dir = os.path.join(os.getcwd(), "COVID-Net") 
-            #covidnet_data_dir = os.path.join(covidnet_dir, "data")
-            #input_data_path = os.path.join(options.inputdir, "data")
-            #input_model_path = os.path.join(options.inputdir, "model")
-            print("calling create_COVIDx.py")
+            data_url = "http://fnndsc.childrens.harvard.edu/COVID-Net/data/"
+            input_data_dir = os.path.join(options.inputdir, "data")
+            if not os.path.exists(input_data_dir):
+                os.mkdir(input_data_dir)
+            self.download_data(data_url, input_data_dir)
+
+            for path, directories, files in os.walk(input_data_dir):
+                for f in files:
+                    if f.endswith(".tar.gz"):
+                        print("Extracting dataset: " + f)
+                        tar = tarfile.open(os.path.join(path,f), 'r:gz')
+                        tar.extractall(path=path)
+                        tar.close()
+                        print("Extracting finished.")
+
+            print("Calling create_COVIDx.py")
             os.chdir(covidnet_dir)
             os.system('python create_COVIDx_v3.py')
 
