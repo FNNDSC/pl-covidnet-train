@@ -41,7 +41,7 @@ RUN apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y keyboard-configuration \
   && apt-get install -y wget git nvidia-361-dev \
   && pip install setuptools --upgrade \
-  && pip install requests bs4 pillow xlrd pydicom pandas wheel opencv-python==4.2.0.34 numpy matplotlib \
+  && pip install lxml requests bs4 pillow xlrd pydicom pandas wheel opencv-python==4.2.0.34 numpy matplotlib \
   && pip install -U scikit-learn \
   && apt-get install -y libsm6 libxext6 libxrender-dev libglib2.0-0 \
   && mkdir -p /usr/local/cuda/lib \
