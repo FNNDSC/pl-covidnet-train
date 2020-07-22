@@ -32,11 +32,6 @@ COPY ["requirements.txt", "${APPROOT}"]
 
 WORKDIR $APPROOT
 
-#RUN pip install --upgrade pip
-#RUN pip install -r requirements.txt
-#apt-get install nvidia-361-dev
-#tensorflow==1.15
-
 RUN apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install -y keyboard-configuration \
   && apt-get install -y wget git nvidia-361-dev \
@@ -47,16 +42,7 @@ RUN apt-get update \
   && mkdir -p /usr/local/cuda/lib \
   && cp /usr/lib/x86_64-linux-gnu/libcuda.so.1 /usr/local/cuda/lib/ \
   && git clone https://github.com/lindawangg/COVID-Net.git \
-  && wget https://raw.githubusercontent.com/grace335/ChRIS-COVID-Net/master/create_COVIDx_v3.py -P ./COVID-Net/
-
-#RUN apt-get update \
-#  && apt-get install -y git wget \
-#  && pip install setuptools --upgrade \
-#  && apt-get install -y libsm6 libxext6 libxrender-dev libglib2.0-0 \
-#  && pip install numpy pandas pydicom opencv-python==4.2.0.34 \
-#  && git clone https://github.com/lindawangg/COVID-Net.git \
-#  && wget https://raw.githubusercontent.com/grace335/ChRIS-COVID-Net/master/create_COVIDx_v3.py -P ./COVID-Net/ 
-#  && ln -s $APPROOT/in/data $APPROOT/COVID-Net/data
+  && wget https://raw.githubusercontent.com/grace335/pl-covidnet-train/master/create_COVIDx_v3.py -P ./COVID-Net/
 
 RUN pip3 install -r requirements.txt
 
