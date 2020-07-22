@@ -22,8 +22,8 @@
 #
 
 
-
-FROM grace335/ubuntu18.04-python3
+FROM fnndsc/ubuntu-python3:18.04
+#FROM grace335/ubuntu18.04-python3
 MAINTAINER fnndsc "dev@babymri.org"
 
 ENV APPROOT="/usr/src/covidnet_train"
@@ -42,7 +42,7 @@ RUN apt-get update \
   && mkdir -p /usr/local/cuda/lib \
   && cp /usr/lib/x86_64-linux-gnu/libcuda.so.1 /usr/local/cuda/lib/ \
   && git clone https://github.com/lindawangg/COVID-Net.git \
-  && wget https://raw.githubusercontent.com/grace335/pl-covidnet-train/master/create_COVIDx_v3.py -P ./COVID-Net/
+  && wget https://raw.githubusercontent.com/grace335/pl-covidnet-train/master/create_COVIDx_v3.py
 
 RUN pip3 install -r requirements.txt
 
