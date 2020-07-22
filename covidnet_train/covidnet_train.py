@@ -178,8 +178,8 @@ class Covidnet_train(ChrisApp):
 
             print("Calling create_COVIDx.py")
             #os.chdir(covidnet_dir)
-            import create_COVIDx_v3
-            create_COVIDx_v3.create_covidx()
+            import COVIDNet.create_COVIDx_v3
+            COVIDNet.create_COVIDx_v3.create_covidx()
             #os.system('python create_COVIDx_v3.py')
 
         # WIP for this part.
