@@ -22,7 +22,6 @@ import requests, urllib
 from urllib.request import urlopen
 from urllib.parse import urlparse
 import tarfile
-import create_COVIDx_v3
 
 Gstr_title = """
 
@@ -178,7 +177,8 @@ class Covidnet_train(ChrisApp):
                         print("Extracting finished.")
 
             print("Calling create_COVIDx.py")
-            os.chdir(covidnet_dir)
+            #os.chdir(covidnet_dir)
+            import create_COVIDx_v3
             create_COVIDx_v3.create_covidx()
             #os.system('python create_COVIDx_v3.py')
 
