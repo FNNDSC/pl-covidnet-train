@@ -37,7 +37,7 @@ Description
 
 ``covidnet_train.py`` is a ChRIS plugin for COVID-Net, a neural network for identifying COVID-19 using chest X-ray images. This plugin runs the COVID-Net training process.
 
-For more detailed information about COVID-Net, refer the github repo [here](https://github.com/lindawangg/COVID-Net).
+For more detailed information about COVID-Net, refer the github repo: https://github.com/lindawangg/COVID-Net.
 
 Agruments
 ---------
