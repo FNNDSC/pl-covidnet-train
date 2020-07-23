@@ -35,7 +35,9 @@ Synopsis
 Description
 -----------
 
-``covidnet_train.py`` is a ChRIS-based application that...
+``covidnet_train.py`` is a ChRIS plugin for COVID-Net, a neural network for identifying COVID-19 using chest X-ray images. This plugin runs the COVID-Net training process.
+
+For more detailed information about COVID-Net, refer the github repo [here](https://github.com/lindawangg/COVID-Net).
 
 Agruments
 ---------
@@ -53,6 +55,9 @@ Agruments
 
     [--meta]
     If specified, print plugin meta data.
+    
+    [--mode]
+    Required flag, specify which mode to run.
 
 
 Run
@@ -87,12 +92,19 @@ Using ``docker run``
 
 To run using ``docker``, be sure to assign an "input" directory to ``/incoming`` and an output directory to ``/outgoing``. *Make sure that the* ``$(pwd)/out`` *directory is world writable!*
 
+To build the docker image:
+
+.. code:: bash
+
+    docker build -t local/pl-cn-train .
+
 Now, prefix all calls with 
 
 .. code:: bash
 
-    docker run --rm -v $(pwd)/out:/outgoing                             \
-            fnndsc/pl-covidnet_train covidnet_train.py                        \
+    docker run --rm -it -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing \
+    local/pl-cn-covidx covidnet_train.py --mode covidx \
+    /incoming /outgoing
 
 Thus, getting inline help is:
 
@@ -100,14 +112,20 @@ Thus, getting inline help is:
 
     mkdir in out && chmod 777 out
     docker run --rm -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing      \
-            fnndsc/pl-covidnet_train covidnet_train.py                        \
+            fnndsc/pl-covidnet_train covidnet_train.py                  \
             --man                                                       \
             /incoming /outgoing
+    
 
 Examples
 --------
 
+.. code:: bash
 
-
+    docker build -t local/pl-cn-covidx .
+    
+    docker run --rm -it -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing \
+    local/pl-cn-covidx covidnet_train.py --mode covidx \
+    /incoming /outgoing
 
 
