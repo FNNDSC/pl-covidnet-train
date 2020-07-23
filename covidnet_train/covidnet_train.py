@@ -125,12 +125,19 @@ class Covidnet_train(ChrisApp):
     OUTPUT_META_DICT = {}
 
     def download_data(self, url, dest_dir):
+        """
+        Download data from url and save in destination dir (dest_dir).
+        """
         links = []
         html = urlopen(url).read()
+        # Use beautifulsoup to parse the html page, and extract names and URLs from 
+        # the HTML page
         html_page = BeautifulSoup(html, features="lxml")
         og_url = html_page.find("meta",  property = "og:url")
         base = urlparse(url)
-        print("base",base)
+        #print("base",base)
+        
+        # Find and save .tar.gz files in links list
         for link in html_page.find_all('a'):
             current_link = link.get('href')
             print(current_link)
@@ -141,6 +148,8 @@ class Covidnet_train(ChrisApp):
                 else:
                     links.append(base.scheme + "://" + base.netloc + current_link)
 
+        # Use wget to download url links in the links list.
+        # Files saved in destination dir
         for link in links:
             os.system('wget ' + link + ' -P ' + dest_dir)
 
@@ -159,14 +168,19 @@ class Covidnet_train(ChrisApp):
         print(Gstr_title)
         print('Version: %s' % self.get_version())
 
+        # covidx mode, download related datasets in the inputdir, and 
+        # run create_COVIDx to combine the datasets into COVIDx dataset
         if options.mode == "covidx":
-            covidnet_dir = os.path.join(os.getcwd(), "COVID-Net") 
+            # dirs: covid-net dir: /usr/src/covidnet_train/COVIDNet
+            # input_data_dir: /incoming/data
+            covidnet_dir = os.path.join(os.getcwd(), "COVIDNet") 
             data_url = "http://fnndsc.childrens.harvard.edu/COVID-Net/data/"
             input_data_dir = os.path.join(options.inputdir, "data")
             if not os.path.exists(input_data_dir):
                 os.mkdir(input_data_dir)
             self.download_data(data_url, input_data_dir)
 
+            # extract tarballs to their current dir
             for path, directories, files in os.walk(input_data_dir):
                 for f in files:
                     if f.endswith(".tar.gz"):
@@ -178,6 +192,7 @@ class Covidnet_train(ChrisApp):
 
             print("Calling create_COVIDx.py")
             #os.chdir(covidnet_dir)
+            # run create_COVIDx
             import COVIDNet.create_COVIDx_v3
             COVIDNet.create_COVIDx_v3.create_covidx()
             #os.system('python create_COVIDx_v3.py')
