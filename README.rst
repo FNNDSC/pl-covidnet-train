@@ -29,6 +29,7 @@ Synopsis
         [--version]                                                 \
         [--man]                                                     \
         [--meta]                                                    \
+        [--mode <mode>]
         <inputDir>
         <outputDir> 
 
