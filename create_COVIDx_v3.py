@@ -11,36 +11,36 @@ from shutil import copyfile
 import pydicom as dicom
 import cv2
 
-def create_covidx():
+def create_covidx(input_data_dir, output_data_dir):
     # set parameters here
-    if not os.path.exists('/outgoing/data'):
-        os.mkdir('/outgoing/data')
-        os.mkdir('/outgoing/data/train')
-        os.mkdir('/outgoing/data/test')
-    savepath = '/outgoing/data'
+    if not os.path.exists(output_data_dir):
+        os.mkdir(output_data_dir)
+        os.mkdir(os.path.join(output_data_dir, 'data/train'))
+        os.mkdir(os.path.join(output_data_dir, 'data/test'))
+    savepath = os.path.join(output_data_dir,'data')
     seed = 0
     np.random.seed(seed)  # Reset the seed so all runs are the same.
     random.seed(seed)
     MAXVAL = 255  # Range [0 255]
 
     # path to covid-19 dataset from https://github.com/ieee8023/covid-chestxray-dataset
-    cohen_imgpath = '/incoming/data/covid-chestxray-dataset/images'
-    cohen_csvpath = '/incoming/data/covid-chestxray-dataset/metadata.csv'
+    cohen_imgpath = os.path.join(input_data_dir, 'covid-chestxray-dataset/images')
+    cohen_csvpath = os.path.join(input_data_dir, 'covid-chestxray-dataset/metadata.csv')
 
     # path to covid-19 dataset from https://github.com/agchung/Figure1-COVID-chestxray-dataset
-    fig1_imgpath = '/incoming/data/Figure1-COVID-chestxray-dataset/images'
-    fig1_csvpath = '/incoming/data/Figure1-COVID-chestxray-dataset/metadata.csv'
+    fig1_imgpath = os.path.join(input_data_dir, 'Figure1-COVID-chestxray-dataset/images')
+    fig1_csvpath = os.path.join(input_data_dir, 'Figure1-COVID-chestxray-dataset/metadata.csv')
 
     # path to covid-19 dataset from https://github.com/agchung/Actualmed-COVID-chestxray-dataset
-    actmed_imgpath = '/incoming/data/Actualmed-COVID-chestxray-dataset/images'
-    actmed_csvpath = '/incoming/data/Actualmed-COVID-chestxray-dataset/metadata.csv'
+    actmed_imgpath = os.path.join(input_data_dir, 'Actualmed-COVID-chestxray-dataset/images')
+    actmed_csvpath = os.path.join(input_data_dir, 'Actualmed-COVID-chestxray-dataset/metadata.csv')
 
     # path to covid-19 dataset from https://www.kaggle.com/tawsifurrahman/covid19-radiography-database
-    sirm_imgpath = '/incoming/data/COVID-19-Radiography-Database/COVID-19'
-    sirm_csvpath = '/incoming/data/COVID-19-Radiography-Database/COVID-19.metadata.xlsx'
+    sirm_imgpath = os.path.join(input_data_dir, 'COVID-19-Radiography-Database/COVID-19')
+    sirm_csvpath = os.path.join(input_data_dir, 'COVID-19-Radiography-Database/COVID-19.metadata.xlsx')
 
     # path to https://www.kaggle.com/c/rsna-pneumonia-detection-challenge
-    rsna_datapath = '/incoming/data/rsna-pneumonia-detection-challenge'
+    rsna_datapath = os.path.join(input_data_dir, 'rsna-pneumonia-detection-challenge')
     # get all the normal from here
     rsna_csvname = 'stage_2_detailed_class_info.csv'
     # get all the 1s from here since 1 indicate pneumonia
