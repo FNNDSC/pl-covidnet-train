@@ -13,8 +13,8 @@ import cv2
 
 def create_covidx(input_data_dir, output_data_dir):
     # set parameters here
-    if not os.path.exists(output_data_dir):
-        os.mkdir(output_data_dir)
+    if not os.path.exists(os.path.join(output_data_dir,'data')):
+        os.mkdir(os.path.join(output_data_dir,'data'))
         os.mkdir(os.path.join(output_data_dir, 'data/train'))
         os.mkdir(os.path.join(output_data_dir, 'data/test'))
     savepath = os.path.join(output_data_dir,'data')
