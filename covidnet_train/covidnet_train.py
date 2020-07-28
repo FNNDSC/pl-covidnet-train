@@ -167,7 +167,7 @@ class Covidnet_train(ChrisApp):
                           dest      = 'data_url',
                           type      = str,
                           optional  = True, 
-                          help      = 'input data url'
+                          help      = 'input data url',
                           default   = 'http://fnndsc.childrens.harvard.edu/COVID-Net/data/')
 
     def run(self, options):
