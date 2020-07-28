@@ -158,8 +158,17 @@ class Covidnet_train(ChrisApp):
         Define the CLI arguments accepted by this plugin app.
         Use self.add_argument to specify a new app argument.
         """
-        self.add_argument('--mode', dest='mode', type=str,
-                          optional=False, help='running mode')
+        self.add_argument('--mode', 
+                          dest      = 'mode', 
+                          type      = str,
+                          optional  = False, 
+                          help      = 'running mode')
+        self.add_argument('--dataUrl',
+                          dest      = 'data_url',
+                          type      = str,
+                          optional  = True, 
+                          help      = 'input data url'
+                          default   = 'http://fnndsc.childrens.harvard.edu/COVID-Net/data/')
 
     def run(self, options):
         """
@@ -174,8 +183,9 @@ class Covidnet_train(ChrisApp):
             # dirs: covid-net dir: /usr/src/covidnet_train/COVIDNet
             # input_data_dir: /incoming/data
             covidnet_dir = os.path.join(os.getcwd(), "COVIDNet") 
-            data_url = "http://fnndsc.childrens.harvard.edu/COVID-Net/data/"
+            data_url = options.data_url
             input_data_dir = os.path.join(options.inputdir, "data")
+            
             if not os.path.exists(input_data_dir):
                 os.mkdir(input_data_dir)
             self.download_data(data_url, input_data_dir)
@@ -194,7 +204,7 @@ class Covidnet_train(ChrisApp):
             #os.chdir(covidnet_dir)
             # run create_COVIDx
             import COVIDNet.create_COVIDx_v3
-            COVIDNet.create_COVIDx_v3.create_covidx()
+            COVIDNet.create_COVIDx_v3.create_covidx(input_data_dir, options.outputdir)
             #os.system('python create_COVIDx_v3.py')
 
         # WIP for this part.
