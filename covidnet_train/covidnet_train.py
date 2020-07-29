@@ -161,7 +161,7 @@ class Covidnet_train(ChrisApp):
         self.add_argument('--mode', 
                           dest      = 'mode', 
                           type      = str,
-                          optional  = False, 
+                          optional  = True, 
                           help      = 'running mode')
         self.add_argument('--dataUrl',
                           dest      = 'data_url',
