@@ -177,35 +177,32 @@ class Covidnet_train(ChrisApp):
         print(Gstr_title)
         print('Version: %s' % self.get_version())
 
-        # covidx mode, download related datasets in the inputdir, and 
-        # run create_COVIDx to combine the datasets into COVIDx dataset
-        if options.mode == "covidx":
-            # dirs: covid-net dir: /usr/src/covidnet_train/COVIDNet
-            # input_data_dir: /incoming/data
-            covidnet_dir = os.path.join(os.getcwd(), "COVIDNet") 
-            data_url = options.data_url
-            input_data_dir = os.path.join(options.inputdir, "data")
+        # dirs: covid-net dir: /usr/src/covidnet_train/COVIDNet
+        # input_data_dir: /incoming/data
+        covidnet_dir = os.path.join(os.getcwd(), "COVIDNet") 
+        data_url = options.data_url
+        input_data_dir = os.path.join(options.inputdir, "data")
             
-            if not os.path.exists(input_data_dir):
-                os.mkdir(input_data_dir)
-            self.download_data(data_url, input_data_dir)
+        if not os.path.exists(input_data_dir):
+            os.mkdir(input_data_dir)
+        self.download_data(data_url, input_data_dir)
 
-            # extract tarballs to their current dir
-            for path, directories, files in os.walk(input_data_dir):
-                for f in files:
-                    if f.endswith(".tar.gz"):
-                        print("Extracting dataset: " + f)
-                        tar = tarfile.open(os.path.join(path,f), 'r:gz')
-                        tar.extractall(path=path)
-                        tar.close()
-                        print("Extracting finished.")
+        # extract tarballs to their current dir
+        for path, directories, files in os.walk(input_data_dir):
+            for f in files:
+                if f.endswith(".tar.gz"):
+                    print("Extracting dataset: " + f)
+                    tar = tarfile.open(os.path.join(path,f), 'r:gz')
+                    tar.extractall(path=path)
+                    tar.close()
+                    print("Extracting finished.")
 
-            print("Calling create_COVIDx.py")
-            #os.chdir(covidnet_dir)
-            # run create_COVIDx
-            import COVIDNet.create_COVIDx_v3
-            COVIDNet.create_COVIDx_v3.create_covidx(input_data_dir, options.outputdir)
-            #os.system('python create_COVIDx_v3.py')
+        print("Calling create_COVIDx.py")
+        #os.chdir(covidnet_dir)
+        # run create_COVIDx
+        import COVIDNet.create_COVIDx_v3
+        COVIDNet.create_COVIDx_v3.create_covidx(input_data_dir, options.outputdir)
+        #os.system('python create_COVIDx_v3.py')
 
         # WIP for this part.
         #if options.mode == "train":
