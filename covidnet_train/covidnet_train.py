@@ -161,7 +161,7 @@ class Covidnet_train(ChrisApp):
         self.add_argument('--mode', 
                           dest      = 'mode', 
                           type      = str,
-                          optional  = False, 
+                          optional  = True, 
                           help      = 'running mode')
 
     def run(self, options):
