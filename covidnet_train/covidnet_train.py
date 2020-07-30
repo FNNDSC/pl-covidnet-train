@@ -158,11 +158,138 @@ class Covidnet_train(ChrisApp):
         Define the CLI arguments accepted by this plugin app.
         Use self.add_argument to specify a new app argument.
         """
-        self.add_argument('--mode', 
-                          dest      = 'mode', 
-                          type      = str,
+        self.add_argument('--epochs', 
+                          dest      = 'epochs', 
+                          type      = int,
                           optional  = True, 
-                          help      = 'running mode')
+                          help      = 'Number of epochs',
+                          default   = 10)
+
+        self.add_argument('--lr',
+                          dest      = 'lr',
+                          type      = float,
+                          optional  = True,
+                          help      = 'Learning rate',
+                          default   = 0.0002)
+
+        self.add_argument('--bs',
+                          dest      = 'bs',
+                          type      = int,
+                          optional  = True,
+                          help      = 'Batch size',
+                          default   = '8')
+
+        self.add_argument('--weightspath',
+                          dest      = 'weightspath',
+                          type      = str,
+                          optional  = True,
+                          help      = 'Path to output folder',
+                          default   = '/outgoing/models/COVIDNet-CXR3-S')
+
+        self.add_argument('--metaname',
+                          dest      = 'metaname',
+                          type      = str,
+                          optional  = True,
+                          help      = 'Name of ckpt meta file',
+                          default   = 'model.meta')
+
+        self.add_argument('--ckptname',
+                          dest      = 'ckptname',
+                          type      = str,
+                          optional  = True,
+                          help      = 'Name of model ckpts',
+                          default   = 'model-1014')
+
+        self.add_argument('--trainfile',
+                          dest      = 'trainfile',
+                          type      = str,
+                          optional  = True,
+                          help      = 'Name of train file',
+                          default   = 'train_COVIDx3.txt')
+
+        self.add_argument('--testfile',
+                          dest      = 'testfile',
+                          type      = str,
+                          optional  = True,
+                          help      = 'Name of test file',
+                          default   = 'test_COVIDx3.txt')
+
+        self.add_argument('--name',
+                          dest      = 'name',
+                          type      = str,
+                          optional  = True,
+                          help      = 'Name of folder to store training checkpoints',
+                          default   = 'COVIDNet')
+
+        self.add_argument('--datadir',
+                          dest      = 'datadir',
+                          type      = str,
+                          optional  = True,
+                          help      = 'Path to data folder',
+                          default   = 'data')
+
+        self.add_argument('--covid_weight',
+                          dest      = 'covid_weight',
+                          type      = float,
+                          optional  = True,
+                          help      = 'Class weighting for covid',
+                          default   = 4)
+
+        self.add_argument('--covid_percent',
+                          dest      = 'covid_percent',
+                          type      = float,
+                          optional  = True,
+                          help      = 'Percentage of covid samples in batch',
+                          default   = 0.3)
+
+        self.add_argument('--input_size',
+                          dest      = 'input_size',
+                          type      = int,
+                          optional  = True,
+                          help      = 'Size of input (ex: if 480x480, --input_size 480)',
+                          default   = 480)
+
+        self.add_argument('--top_percent',
+                          dest      = 'top_percent',
+                          type      = float,
+                          optional  = True,
+                          help      = 'Percent top crop from top of image',
+                          default   = 0.08)
+
+        self.add_argument('--in_tensorname',
+                          dest      = 'in_tensorname',
+                          type      = str,
+                          optional  = True,
+                          help      = 'Name of input tensor to graph',
+                          default   = 'input_1:0')
+
+        self.add_argument('--out_tensorname',
+                          dest      = 'out_tensorname',
+                          type      = str,
+                          optional  = True,
+                          help      = 'Name of output tensor from graph',
+                          default   = 'norm_dense_1/Softmax:0')
+
+        self.add_argument('--logit_tensorname',
+                          dest      = 'logit_tensorname',
+                          type      = str,
+                          optional  = True,
+                          help      = 'Name of logit tensor for loss',
+                          default   = 'norm_dense_1/MatMul:0')
+
+        self.add_argument('--label_tensorname',
+                          dest      = 'label_tensorname',
+                          type      = str,
+                          optional  = True,
+                          help      = 'Name of label tensor for loss',
+                          default   = 'norm_dense_1_target:0')
+
+        self.add_argument('--weights_tensorname',
+                          dest      = 'weights_tensorname',
+                          type      = str,
+                          optional  = True,
+                          help      = 'Name of sample weights tensor for loss',
+                          default   = 'norm_dense_1_sample_weights:0')
 
     def run(self, options):
         """
@@ -175,15 +302,18 @@ class Covidnet_train(ChrisApp):
         # input_data_dir: /incoming/data
         covidnet_dir = os.path.join(os.getcwd(), "COVIDNet") 
         input_data_dir = os.path.join(options.inputdir, "data")
-            
-        if not os.path.exists(input_data_dir):
-            os.mkdir(input_data_dir)
+        output_data_dir = os.path.join(options.outputdir, "output")    
 
         print("Calling covid-net training script")
         #os.chdir(covidnet_dir)
         # run create_COVIDx
         import COVIDNet.train_tf
-        COVIDNet.train_tf.train_tf(input_data_dir, options.outputdir)
+        COVIDNet.train_tf.train_tf(options.epochs, options.lr, options.bs, options.weightspath, 
+                options.metaname, options.ckptname, options.trainfile, options.testfile, options.name, 
+                options.datadir, options.covid_weight, options.covid_percent, options.input_size, 
+                options.top_percent, options.in_tensorname, options.out_tensorname, 
+                options.logit_tensorname, options.label_tensorname, options.weights_tensorname,
+                input_data_dir, output_data_dir)
         #os.system('python create_COVIDx_v3.py')
 
 
