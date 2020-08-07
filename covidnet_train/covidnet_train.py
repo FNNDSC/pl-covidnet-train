@@ -291,6 +291,13 @@ class Covidnet_train(ChrisApp):
                           help      = 'Name of sample weights tensor for loss',
                           default   = 'norm_dense_1_sample_weights:0')
 
+        self.add_argument('--model_url',
+                          dest      = 'model_url',
+                          type      = str,
+                          optional  = True,
+                          help      = 'Url to download pre-trained COVID-Net model',
+                          default   = 'http://fnndsc.childrens.harvard.edu/COVID-Net/models/')
+
     def run(self, options):
         """
         Define the code to be run by this plugin app.
@@ -300,20 +307,40 @@ class Covidnet_train(ChrisApp):
 
         # dirs: covid-net dir: /usr/src/covidnet_train/COVIDNet
         # input_data_dir: /incoming/data
+        # input_model_dir: /incoming/models
         covidnet_dir = os.path.join(os.getcwd(), "COVIDNet") 
         input_data_dir = os.path.join(options.inputdir, "data")
-        output_data_dir = os.path.join(options.outputdir, "output")    
+        output_data_dir = os.path.join(options.outputdir, "output")
+        model_url = options.model_url
+        input_model_dir = os.path.join(options.inputdir, "models")
+
+        if not os.path.exists(input_model_dir):
+            os.mkdir(input_model_dir)
+        self.download_data(model_url, input_model_dir)
+
+        # extract tarballs to their current dir
+        for path, directories, files in os.walk(input_model_dir):
+            for f in files:
+                if f.endswith(".tar.gz"):
+                    print("Extracting models: " + f)
+                    tar = tarfile.open(os.path.join(path,f), 'r:gz')
+                    tar.extractall(path=path)
+                    tar.close()
+                    print("Extracting finished.")
+
 
         print("Calling covid-net training script")
+        os.system("ls /incoming/models")
         #os.chdir(covidnet_dir)
         # run create_COVIDx
-        import COVIDNet.train_tf
-        COVIDNet.train_tf.train_tf(options.epochs, options.lr, options.bs, options.weightspath, 
-                options.metaname, options.ckptname, options.trainfile, options.testfile, options.name, 
-                options.datadir, options.covid_weight, options.covid_percent, options.input_size, 
-                options.top_percent, options.in_tensorname, options.out_tensorname, 
-                options.logit_tensorname, options.label_tensorname, options.weights_tensorname,
-                input_data_dir, output_data_dir)
+#        import COVIDNet.train_tf
+#        COVIDNet.train_tf.train_tf(options.epochs, options.lr, options.bs, options.weightspath, 
+#                options.metaname, options.ckptname, options.trainfile, options.testfile, options.name, 
+#                options.datadir, options.covid_weight, options.covid_percent, options.input_size, 
+#                options.top_percent, options.in_tensorname, options.out_tensorname, 
+#                options.logit_tensorname, options.label_tensorname, options.weights_tensorname,
+#                input_data_dir, output_data_dir)
+
         #os.system('python create_COVIDx_v3.py')
 
 
