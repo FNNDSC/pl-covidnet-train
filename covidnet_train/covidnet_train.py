@@ -184,7 +184,7 @@ class Covidnet_train(ChrisApp):
                           type      = str,
                           optional  = True,
                           help      = 'Path to output folder',
-                          default   = '/outgoing/models/COVIDNet-CXR3-S')
+                          default   = '/incoming/models/COVIDNet-CXR3-B')
 
         self.add_argument('--metaname',
                           dest      = 'metaname',
@@ -205,7 +205,7 @@ class Covidnet_train(ChrisApp):
                           type      = str,
                           optional  = True,
                           help      = 'Name of train file',
-                          default   = 'train_COVIDx3.txt')
+                          default   = 'train_split_v3.txt')
 
         self.add_argument('--testfile',
                           dest      = 'testfile',
@@ -225,8 +225,8 @@ class Covidnet_train(ChrisApp):
                           dest      = 'datadir',
                           type      = str,
                           optional  = True,
-                          help      = 'Path to data folder',
-                          default   = 'data')
+                          help      = 'Path to input data folder',
+                          default   = '/incoming/data')
 
         self.add_argument('--covid_weight',
                           dest      = 'covid_weight',
@@ -331,15 +331,15 @@ class Covidnet_train(ChrisApp):
 
         print("Calling covid-net training script")
         os.system("ls /incoming/models")
-        #os.chdir(covidnet_dir)
+        os.chdir(covidnet_dir)
         # run create_COVIDx
-#        import COVIDNet.train_tf
-#        COVIDNet.train_tf.train_tf(options.epochs, options.lr, options.bs, options.weightspath, 
-#                options.metaname, options.ckptname, options.trainfile, options.testfile, options.name, 
-#                options.datadir, options.covid_weight, options.covid_percent, options.input_size, 
-#                options.top_percent, options.in_tensorname, options.out_tensorname, 
-#                options.logit_tensorname, options.label_tensorname, options.weights_tensorname,
-#                input_data_dir, output_data_dir)
+        import train_tf
+        train_tf.train_tf(options.epochs, options.lr, options.bs, options.weightspath, 
+                options.metaname, options.ckptname, options.trainfile, options.testfile, options.name, 
+                options.datadir, options.covid_weight, options.covid_percent, options.input_size, 
+                options.top_percent, options.in_tensorname, options.out_tensorname, 
+                options.logit_tensorname, options.label_tensorname, options.weights_tensorname,
+                input_data_dir, output_data_dir)
 
         #os.system('python create_COVIDx_v3.py')
 

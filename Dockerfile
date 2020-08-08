@@ -36,23 +36,16 @@ RUN apt-get update \
   && apt-get install -y wget git nvidia-361-dev \
   && pip install setuptools --upgrade \
   && pip3 install --upgrade pip \
-  && pip install lxml requests bs4 pillow xlrd pydicom pandas wheel opencv-python==4.2.0.34 numpy matplotlib \
+  && pip install lxml requests bs4 pillow xlrd pydicom pandas wheel tensorflow==1.15 opencv-python==4.2.0.34 numpy matplotlib \
   && pip install -U scikit-learn \
   && apt-get install -y libsm6 libxext6 libxrender-dev libglib2.0-0 \
   && mkdir -p /usr/local/cuda/lib \
   && cp /usr/lib/x86_64-linux-gnu/libcuda.so.1 /usr/local/cuda/lib/ \
   && git clone https://github.com/lindawangg/COVID-Net.git COVIDNet \
-  && wget https://raw.githubusercontent.com/grace335/pl-covidnet-train/master/train_tf.py -P ./COVIDNet/
-
-# Below is light weight container for testing
-#RUN apt-get update \
-#  && DEBIAN_FRONTEND=noninteractive apt-get install -y keyboard-configuration \
-#  && apt-get install -y wget git \
-#  && pip install setuptools --upgrade \
-#  && pip3 install --upgrade pip \
-#  && pip install lxml requests bs4 \
-#  && git clone https://github.com/lindawangg/COVID-Net.git COVIDNet \
-#  && wget https://raw.githubusercontent.com/grace335/pl-covidnet-train/master/train_tf.py -P ./COVIDNet/
+  && rm ./COVIDNet/train_tf.py \
+  && wget https://raw.githubusercontent.com/grace335/pl-covidnet-train/master/train_tf.py -P ./COVIDNet/ \
+  && wget https://raw.githubusercontent.com/grace335/pl-covidnet-train/master/train_split_v3.txt -P ./COVIDNet/ \
+  && wget https://raw.githubusercontent.com/grace335/pl-covidnet-train/master/test_split_v3.txt -P ./COVIDNet/
 
 RUN pip3 install -r requirements.txt
 
