@@ -52,7 +52,26 @@ where necessary.)
         python covidnet_train.py                                         \\
             [-h] [--help]                                               \\
             [--man]                                                     \\
-            [--mode <MODE>]                                          \\
+            [--epochs <epochs>]                                         \\
+            [--lr <LearningRate>]                                       \\
+            [--bs <BatchSize>]                                          \\
+            [--weightspath <PathToOutputFolder>]                        \\
+            [--metaname <CkptMetaFile>]                                 \\
+            [--ckptname <NameOfModelCkpts>]                             \\
+            [--trainfile <NameOfTrainFile>]                             \\
+            [--testfile <NameOfTestFile>]                               \\
+            [--name <FolderNameForTrainingCheckpoints>]                 \\
+            [--datadir <InputDataFolder>]                               \\
+            [--covid_weight <ClassWeightingForCovid>]                   \\
+            [--covid_percent <PercentageOfCovidSamples>]                \\
+            [--input_size <SizeOfInput>]                                \\
+            [--top_percent <PercentTopCrop>]                            \\
+            [--in_tensorname <InputTensorToGraph>]                      \\
+            [--out_tensorname <OutputTensorFromGraph>]                  \\
+            [--logit_tensorname <LogitTensorForLoss>]                   \\
+            [--label_tensorname <LabelTensorForLoss>]                   \\
+            [--weights_tensorname <SampleWeightsTensorForLoss>]         \\
+            [--model_url <UrlForPreTrainedModels>]                      \\
             [--version]                                                 \\
             <inputDir>                                                  \\
             <outputDir> 
@@ -77,8 +96,65 @@ where necessary.)
         [--man]
         If specified, print (this) man page and exit.
 
-        [--mode <MODE>] 
-        If specify the mode to . 
+        [--epochs <epochs>]
+        Number of epochs.
+        
+        [--lr <LearningRate>]
+        Learning rate.
+            
+        [--bs <BatchSize>]
+        Batch size.
+        
+        [--weightspath <PathToOutputFolder>]
+        Path to output folder.
+        
+        [--metaname <CkptMetaFile>]
+        Name of ckpt meta file.
+        
+        [--ckptname <NameOfModelCkpts>]
+        Name of model ckpts.
+        
+        [--trainfile <NameOfTrainFile>]
+        Name of train file.
+        
+        [--testfile <NameOfTestFile>]
+        Name of test file.
+        
+        [--name <FolderNameForTrainingCheckpoints>]
+        Name of folder to store training checkpoints.
+        
+        [--datadir <InputDataFolder>]
+        Path to input data folder.
+        
+        [--covid_weight <ClassWeightingForCovid>]
+        Class weighting for covid.
+        
+        [--covid_percent <PercentageOfCovidSamples>]
+        Percentage of covid samples in batch.
+        
+        [--input_size <SizeOfInput>]
+        Size of input (ex: if 480x480, --input_size 480).
+        
+        [--top_percent <PercentTopCrop>]
+        Percent top crop from top of image.
+        
+        [--in_tensorname <InputTensorToGraph>]
+        Name of input tensor to graph.
+        
+        [--out_tensorname <OutputTensorFromGraph>]
+        Name of output tensor from graph.
+        
+        [--logit_tensorname <LogitTensorForLoss>]
+        Name of logit tensor for loss.
+        
+        [--label_tensorname <LabelTensorForLoss>]
+        Name of label tensor for loss.
+        
+        [--weights_tensorname <SampleWeightsTensorForLoss>]
+        Name of sample weights tensor for loss.
+        
+        [--model_url <UrlForPreTrainedModels>]
+        Url to download pre-trained COVID-Net model.
         
         [--version]
         If specified, print version number and exit. 
@@ -305,7 +381,8 @@ class Covidnet_train(ChrisApp):
         print(Gstr_title)
         print('Version: %s' % self.get_version())
 
-        # dirs: covid-net dir: /usr/src/covidnet_train/COVIDNet
+        # dirs: 
+        # covid_net_dir: /usr/src/covidnet_train/COVIDNet
         # input_data_dir: /incoming/data
         # input_model_dir: /incoming/models
         covidnet_dir = os.path.join(os.getcwd(), "COVIDNet") 
@@ -314,6 +391,7 @@ class Covidnet_train(ChrisApp):
         model_url = options.model_url
         input_model_dir = os.path.join(options.inputdir, "models")
 
+        # create input model directory (/incoming/models) if not exist
         if not os.path.exists(input_model_dir):
             os.mkdir(input_model_dir)
         self.download_data(model_url, input_model_dir)
@@ -329,10 +407,9 @@ class Covidnet_train(ChrisApp):
                     print("Extracting finished.")
 
 
-        print("Calling covid-net training script")
-        os.system("ls /incoming/models")
+        print("Calling covid-net training.")
         os.chdir(covidnet_dir)
-        # run create_COVIDx
+        # import and run train_tf 
         import train_tf
         train_tf.train_tf(options.epochs, options.lr, options.bs, options.weightspath, 
                 options.metaname, options.ckptname, options.trainfile, options.testfile, options.name, 
@@ -340,9 +417,6 @@ class Covidnet_train(ChrisApp):
                 options.top_percent, options.in_tensorname, options.out_tensorname, 
                 options.logit_tensorname, options.label_tensorname, options.weights_tensorname,
                 input_data_dir, output_data_dir)
-
-        #os.system('python create_COVIDx_v3.py')
-
 
     def show_man_page(self):
         """
