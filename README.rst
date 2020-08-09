@@ -16,7 +16,7 @@ pl-covidnet-train
 Abstract
 --------
 
-run a COVID-NET training session
+run a COVID-NET training session.
 
 
 Synopsis
@@ -24,14 +24,32 @@ Synopsis
 
 .. code::
 
-    python covidnet_train.py                                           \
-        [-v <level>] [--verbosity <level>]                          \
-        [--version]                                                 \
-        [--man]                                                     \
-        [--meta]                                                    \
-        [--mode <mode>]
-        <inputDir>
-        <outputDir> 
+    python covidnet_train.py                                         \\
+            [-h] [--help]                                               \\
+            [--man]                                                     \\
+            [--epochs <epochs>]                                         \\
+            [--lr <LearningRate>]                                       \\
+            [--bs <BatchSize>]                                          \\
+            [--weightspath <PathToOutputFolder>]                        \\
+            [--metaname <CkptMetaFile>]                                 \\
+            [--ckptname <NameOfModelCkpts>]                             \\
+            [--trainfile <NameOfTrainFile>]                             \\
+            [--testfile <NameOfTestFile>]                               \\
+            [--name <FolderNameForTrainingCheckpoints>]                 \\
+            [--datadir <InputDataFolder>]                               \\
+            [--covid_weight <ClassWeightingForCovid>]                   \\
+            [--covid_percent <PercentageOfCovidSamples>]                \\
+            [--input_size <SizeOfInput>]                                \\
+            [--top_percent <PercentTopCrop>]                            \\
+            [--in_tensorname <InputTensorToGraph>]                      \\
+            [--out_tensorname <OutputTensorFromGraph>]                  \\
+            [--logit_tensorname <LogitTensorForLoss>]                   \\
+            [--label_tensorname <LabelTensorForLoss>]                   \\
+            [--weights_tensorname <SampleWeightsTensorForLoss>]         \\
+            [--model_url <UrlForPreTrainedModels>]                      \\
+            [--version]                                                 \\
+            <inputDir>                                                  \\
+            <outputDir> 
 
 Description
 -----------
@@ -45,20 +63,73 @@ Agruments
 
 .. code::
 
-    [-v <level>] [--verbosity <level>]
-    Verbosity level for app. Not used currently.
-
-    [--version]
-    If specified, print version number. 
-    
-    [--man]
-    If specified, print (this) man page.
-
-    [--meta]
-    If specified, print plugin meta data.
-    
-    [--mode]
-    Required flag, specify which mode to run.
+    [-h] [--help]
+        If specified, show help message and exit.
+        
+        [--man]
+        If specified, print (this) man page and exit.
+        [--epochs <epochs>]
+        Number of epochs.
+        
+        [--lr <LearningRate>]
+        Learning rate.
+            
+        [--bs <BatchSize>]
+        Batch size.
+        
+        [--weightspath <PathToOutputFolder>]
+        Path to output folder.
+        
+        [--metaname <CkptMetaFile>]
+        Name of ckpt meta file.
+        
+        [--ckptname <NameOfModelCkpts>]
+        Name of model ckpts.
+        
+        [--trainfile <NameOfTrainFile>]
+        Name of train file.
+        
+        [--testfile <NameOfTestFile>]
+        Name of test file.
+        
+        [--name <FolderNameForTrainingCheckpoints>]
+        Name of folder to store training checkpoints.
+        
+        [--datadir <InputDataFolder>]
+        Path to input data folder.
+        
+        [--covid_weight <ClassWeightingForCovid>]
+        Class weighting for covid.
+        
+        [--covid_percent <PercentageOfCovidSamples>]
+        Percentage of covid samples in batch.
+        
+        [--input_size <SizeOfInput>]
+        Size of input (ex: if 480x480, --input_size 480).
+        
+        [--top_percent <PercentTopCrop>]
+        Percent top crop from top of image.
+        
+        [--in_tensorname <InputTensorToGraph>]
+        Name of input tensor to graph.
+        
+        [--out_tensorname <OutputTensorFromGraph>]
+        Name of output tensor from graph.
+        
+        [--logit_tensorname <LogitTensorForLoss>]
+        Name of logit tensor for loss.
+        
+        [--label_tensorname <LabelTensorForLoss>]
+        Name of label tensor for loss.
+        
+        [--weights_tensorname <SampleWeightsTensorForLoss>]
+        Name of sample weights tensor for loss.
+        
+        [--model_url <UrlForPreTrainedModels>]
+        Url to download pre-trained COVID-Net model.
+        
+        [--version]
+        If specified, print version number and exit. 
 
 
 Run
@@ -103,9 +174,9 @@ Now, prefix all calls with
 
 .. code:: bash
 
-    docker run --rm -it -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing \
-    local/pl-cn-covidx covidnet_train.py --mode covidx \
-    /incoming /outgoing
+    docker run --rm -it -v /root/pl-covidnet-generate-dataset/out/:/incoming \
+    -v $(pwd)/out:/outgoing local/pl-cn-train covidnet_train.py --trainfile \
+    train_split_v3.txt --datadir /incoming/data /incoming /outgoing
 
 Thus, getting inline help is:
 
@@ -125,8 +196,8 @@ Examples
 
     docker build -t local/pl-cn-covidx .
     
-    docker run --rm -it -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing \
-    local/pl-cn-covidx covidnet_train.py --mode covidx \
-    /incoming /outgoing
+    docker run --rm -it -v /root/pl-covidnet-generate-dataset/out/:/incoming \
+    -v $(pwd)/out:/outgoing local/pl-cn-train covidnet_train.py --trainfile \
+    train_split_v3.txt --datadir /incoming/data /incoming /outgoing
 
 
