@@ -55,7 +55,7 @@ where necessary.)
             [--epochs <epochs>]                                         \\
             [--lr <LearningRate>]                                       \\
             [--bs <BatchSize>]                                          \\
-            [--weightspath <PathToOutputFolder>]                        \\
+            [--weightspath <PathToModelFolder>]                        \\
             [--metaname <CkptMetaFile>]                                 \\
             [--ckptname <NameOfModelCkpts>]                             \\
             [--trainfile <NameOfTrainFile>]                             \\
@@ -105,8 +105,8 @@ where necessary.)
         [--bs <BatchSize>]
         Batch size.
         
-        [--weightspath <PathToOutputFolder>]
-        Path to output folder.
+        [--weightspath <PathToModelFolder>]
+        Path to model folder.
         
         [--metaname <CkptMetaFile>]
         Name of ckpt meta file.
@@ -259,7 +259,7 @@ class Covidnet_train(ChrisApp):
                           dest      = 'weightspath',
                           type      = str,
                           optional  = True,
-                          help      = 'Path to output folder',
+                          help      = 'Path to pre-trained model folder',
                           default   = '/incoming/models/COVIDNet-CXR3-B')
 
         self.add_argument('--metaname',
