@@ -58,7 +58,7 @@ Description
 
 For more detailed information about COVID-Net, refer the github repo: https://github.com/lindawangg/COVID-Net.
 
-Agruments
+Arguments
 ---------
 
 .. code::
