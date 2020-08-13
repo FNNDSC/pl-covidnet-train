@@ -202,7 +202,9 @@ Examples
 Combined run with pl-covidnet-generate-dataset and pl-covidnet-train
 ================================
 
-The covidnet-train plugin relies on the output from the covidnet-generate-dataset plugin.
+The covidnet-train plugin relies on the output from the covidnet-generate-dataset plugin. 
+
+This plugin was tested on Ubuntu 18.04.
 
 This part explains the complete workflow to run the two steps:
 
