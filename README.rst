@@ -218,9 +218,11 @@ as input, and run the COVID-Net training process.
 
 The general workflow is like this:
 
-              ┌──────────────────────────────────┐  ┌─►/outputdir (COVIDx dataset)    ┌──────────────────────┐  
-/inputdir ───►│ covidnet-generate-dataset plugin ├──┘         |                   ┌──►│ covidnet-train plugin├───► /outputdir
-              └──────────────────────────────────┘        /inputdir───────────────┘   └──────────────────────┘     
+::
+
+                  ┌──────────────────────────────────┐  ┌─►/outputdir (COVIDx dataset)     ┌──────────────────────┐  
+    /inputdir ───►│ covidnet-generate-dataset plugin ├──┘         |                    ┌──►│ covidnet-train plugin├───► /outputdir
+                  └──────────────────────────────────┘        /inputdir────────────────┘   └──────────────────────┘     
 
 Prerequisites
 --------
