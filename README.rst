@@ -164,26 +164,26 @@ Using ``docker run``
 
 To run using ``docker``, be sure to assign an "input" directory to ``/incoming`` and an output directory to ``/outgoing``. *Make sure that the* ``$(pwd)/out`` *directory is world writable!*
 
-To build the docker image:
+To pull the docker image from dockerhub:
 
 .. code:: bash
 
-    docker build -t local/pl-cn-train .
+    docker pull grace335/pl-covidnet-train
 
 Now, prefix all calls with 
 
 .. code:: bash
 
     docker run --rm -it -v /root/pl-covidnet-generate-dataset/out/:/incoming \
-    -v $(pwd)/out:/outgoing local/pl-cn-train covidnet_train.py /incoming /outgoing
+    -v $(pwd)/out:/outgoing grace335/pl-covidnet-train covidnet_train.py /incoming /outgoing
 
 Thus, getting inline help is:
 
 .. code:: bash
 
     mkdir in out && chmod 777 out
-    docker run --rm -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing      \
-            fnndsc/pl-covidnet_train covidnet_train.py                  \
+    docker run --rm -v /root/pl-covidnet-generate-dataset/out/:/incoming -v $(pwd)/out:/outgoing      \
+            grace335/pl-covidnet-train covidnet_train.py                  \
             --man                                                       \
             /incoming /outgoing
     
@@ -193,10 +193,10 @@ Examples
 
 .. code:: bash
 
-    docker build -t local/pl-cn-train .
+    docker pull grace335/pl-covidnet-train
     
     docker run --rm -it -v /root/pl-covidnet-generate-dataset/out/:/incoming \
-    -v $(pwd)/out:/outgoing local/pl-cn-train covidnet_train.py /incoming /outgoing
+    -v $(pwd)/out:/outgoing grace335/pl-covidnet-train covidnet_train.py /incoming /outgoing
 
 
 Combined run with pl-covidnet-generate-dataset and pl-covidnet-train
@@ -213,8 +213,8 @@ This part explains the complete workflow to run the two steps:
 the COVIDx dataset. The detailed description of the COVIDx dataset can be found here:
 https://github.com/lindawangg/COVID-Net/blob/master/docs/COVIDx.md
 
-2) Run the pl-covidnet-train plugin, which uses the COVIDx dataset as input, and run the 
-actual COVID-Net training process.
+2) Run the pl-covidnet-train plugin, which uses the COVIDx dataset (output of previous step) 
+as input, and run the COVID-Net training process.
 
 Prerequisites
 --------
@@ -373,7 +373,7 @@ Now the plugin should start to run. A sample output will be like this:
 
 ::
 
-    ~/pl-covidnet-generate-dataset# docker run --rm -it -v /root/pl-covidnet-generate-dataset/out/:/incoming -v $(pwd)/out:/outgoing grace335/pl-covidnet-train covidnet_train.py /incoming /outgoing
+    ~/pl-covidnet-train# docker run --rm -it -v /root/pl-covidnet-generate-dataset/out/:/incoming -v $(pwd)/out:/outgoing grace335/pl-covidnet-train covidnet_train.py /incoming /outgoing
 
 
                     _     _            _    _             _        
