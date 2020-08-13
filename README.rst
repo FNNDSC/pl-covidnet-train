@@ -175,8 +175,7 @@ Now, prefix all calls with
 .. code:: bash
 
     docker run --rm -it -v /root/pl-covidnet-generate-dataset/out/:/incoming \
-    -v $(pwd)/out:/outgoing local/pl-cn-train covidnet_train.py --trainfile \
-    train_split_v3.txt --datadir /incoming/data /incoming /outgoing
+    -v $(pwd)/out:/outgoing local/pl-cn-train covidnet_train.py /incoming /outgoing
 
 Thus, getting inline help is:
 
@@ -197,8 +196,7 @@ Examples
     docker build -t local/pl-cn-train .
     
     docker run --rm -it -v /root/pl-covidnet-generate-dataset/out/:/incoming \
-    -v $(pwd)/out:/outgoing local/pl-cn-train covidnet_train.py --trainfile \
-    train_split_v3.txt --datadir /incoming/data /incoming /outgoing
+    -v $(pwd)/out:/outgoing local/pl-cn-train covidnet_train.py /incoming /outgoing
 
 
 Combined run with pl-covidnet-generate-dataset and pl-covidnet-train
