@@ -356,6 +356,9 @@ Once the pl-covidnet-generate-dataset plugin finishes, we can use its output to 
 
 .. code:: bash
     
+    # Go back to upper dir
+    cd ..
+    
     # Clone the pl-covidnet-train git repo
     git clone https://github.com/grace335/pl-covidnet-train.git
     
