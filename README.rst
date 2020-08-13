@@ -220,6 +220,7 @@ Prerequisites
 --------
 First, make sure to have docker installed on your computer. Install docker if needed.
 For example, for Ubuntu:
+
 .. code:: bash
     sudo apt-get install docker.io
 
