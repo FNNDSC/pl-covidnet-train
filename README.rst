@@ -359,8 +359,8 @@ Once the pl-covidnet-generate-dataset plugin finishes, we can use its output to 
     # Clone the pl-covidnet-train git repo
     git clone https://github.com/grace335/pl-covidnet-train.git
     
-    # Go to pl-covidnet-generate-dataset
-    cd pl-covidnet-generate-dataset/
+    # Go to pl-covidnet-train
+    cd pl-covidnet-train/
     
     # Pull docker image
     docker pull grace335/pl-covidnet-train
