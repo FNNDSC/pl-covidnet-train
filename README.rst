@@ -16,7 +16,7 @@ pl-covidnet-train
 Abstract
 --------
 
-run a COVID-NET training session.
+This plugin runs a COVID-NET training session.
 
 
 Synopsis
@@ -201,3 +201,9 @@ Examples
     train_split_v3.txt --datadir /incoming/data /incoming /outgoing
 
 
+Combined run with pl-covidnet-generate-dataset and pl-covidnet-train
+================================
+
+The covidnet-train plugin relies on the output from the covidnet-generate-dataset plugin.
+This part explains the complete workflow to run the two steps:
+1. Run the pl-covidnet-generate-dataset plugin,
