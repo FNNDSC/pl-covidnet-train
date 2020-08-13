@@ -365,7 +365,8 @@ Now the plugin should start to run. A sample output will be like this:
     
     # Run the training plugin. Please make sure to replace [PATH_TO_OUTPUT_OF_STEP_1] with the absolute path of the output folder of step 1 (pl-covidnet-generate-dataset).
     docker run --rm -it -v [PATH_TO_OUTPUT_OF_STEP_1]:/incoming -v $(pwd)/out:/outgoing grace335/pl-covidnet-train covidnet_train.py /incoming /outgoing
-    # For example (if pl-covidnet-generate-dataset is located at /root/pl-covidnet-generate-dataset):
+    
+    # For example, (if pl-covidnet-generate-dataset is located at /root/pl-covidnet-generate-dataset):
     docker run --rm -it -v /root/pl-covidnet-generate-dataset/out/:/incoming -v $(pwd)/out:/outgoing grace335/pl-covidnet-train covidnet_train.py /incoming /outgoing
 
 Now the plugin should start to run. A sample output will be like this:
