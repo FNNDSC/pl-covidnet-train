@@ -216,6 +216,12 @@ https://github.com/lindawangg/COVID-Net/blob/master/docs/COVIDx.md
 2) Run the pl-covidnet-train plugin, which uses the COVIDx dataset (output of previous step) 
 as input, and run the COVID-Net training process.
 
+The general workflow is like this:
+
+              ┌──────────────────────────────────┐  ┌─►/outputdir (COVIDx dataset)    ┌──────────────────────┐  
+/inputdir ───►│ covidnet-generate-dataset plugin ├──┘         |                   ┌──►│ covidnet-train plugin├───► /outputdir
+              └──────────────────────────────────┘        /inputdir───────────────┘   └──────────────────────┘     
+
 Prerequisites
 --------
 First, make sure to have docker installed on your computer. Install docker if needed.
