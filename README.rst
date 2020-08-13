@@ -352,6 +352,8 @@ Now the plugin should start to run. A sample output will be like this:
 2. Run the pl-covidnet-train plugin
 --------
 
+Once the pl-covidnet-generate-dataset plugin finishes, we can use its output to run the pl-covidnet-train plugin.
+
 .. code:: bash
     
     # Clone the pl-covidnet-train git repo
