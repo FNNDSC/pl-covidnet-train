@@ -229,12 +229,16 @@ For example, for Ubuntu, run:
 
 .. code:: bash
     
+    # Clone the pl-covidnet-generate-dataset git repo
     git clone https://github.com/grace335/pl-covidnet-generate-dataset.git
     
+    # Go to pl-covidnet-generate-dataset dir
     cd pl-covidnet-generate-dataset/
     
+    # Pull docker image
     docker pull grace335/pl-covidnet-generate-dataset
     
+    # Run the generate dataset plugin
     docker run --rm -it -v $(pwd)/in:/incoming -v $(pwd)/out:/outgoing grace335/pl-covidnet-generate-dataset covidnet_generate_dataset.py --mode covidx /incoming /outgoing
     
 Now the plugin should start to run. A sample output will be like:
@@ -244,12 +248,16 @@ Now the plugin should start to run. A sample output will be like:
 
 .. code:: bash
     
+    # Clone the pl-covidnet-train git repo
     git clone https://github.com/grace335/pl-covidnet-train.git
     
+    # Go to pl-covidnet-generate-dataset
     cd pl-covidnet-generate-dataset/
     
+    # Pull docker image
     docker pull grace335/pl-covidnet-train
     
+    # Run the training plugin. Please make sure to replace [PATH_TO_OUTPUT_OF_STEP_1] with the absolute path of the output folder of step 1 (pl-covidnet-generate-dataset).
     docker run --rm -it -v [PATH_TO_OUTPUT_OF_STEP_1]:/incoming -v $(pwd)/out:/outgoing local/pl-cn-train covidnet_train.py /incoming /outgoing
-    # Example:
+    # For example:
     docker run --rm -it -v /root/pl-covidnet-generate-dataset/out/:/incoming -v $(pwd)/out:/outgoing local/pl-cn-train covidnet_train.py /incoming /outgoing
