@@ -219,9 +219,10 @@ actual COVID-Net training process.
 Prerequisites
 --------
 First, make sure to have docker installed on your computer. Install docker if needed.
-For example, for Ubuntu:
+For example, for Ubuntu, run:
 
 .. code:: bash
+
     sudo apt-get install docker.io
 
 
