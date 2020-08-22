@@ -239,12 +239,6 @@ For example, for Ubuntu, run:
 
 .. code:: bash
     
-    # Clone the pl-covidnet-generate-dataset git repo
-    git clone https://github.com/grace335/pl-covidnet-generate-dataset.git
-    
-    # Go to pl-covidnet-generate-dataset dir
-    cd pl-covidnet-generate-dataset/
-    
     # Pull docker image
     docker pull grace335/pl-covidnet-generate-dataset
     
@@ -364,15 +358,6 @@ Once the pl-covidnet-generate-dataset plugin finishes, we can use its output to 
 
 .. code:: bash
     
-    # Go back to upper dir
-    cd ..
-    
-    # Clone the pl-covidnet-train git repo
-    git clone https://github.com/grace335/pl-covidnet-train.git
-    
-    # Go to pl-covidnet-train
-    cd pl-covidnet-train/
-    
     # Pull docker image
     docker pull grace335/pl-covidnet-train
     
@@ -380,7 +365,7 @@ Once the pl-covidnet-generate-dataset plugin finishes, we can use its output to 
     docker run --rm -it -v [PATH_TO_OUTPUT_OF_STEP_1]:/incoming -v $(pwd)/out:/outgoing grace335/pl-covidnet-train covidnet_train.py /incoming /outgoing
     
     # For example, (if pl-covidnet-generate-dataset is located at /root/pl-covidnet-generate-dataset):
-    docker run --rm -it -v /root/pl-covidnet-generate-dataset/out/:/incoming -v $(pwd)/out:/outgoing grace335/pl-covidnet-train covidnet_train.py /incoming /outgoing
+    docker run --rm -it -v /root/out/:/incoming -v $(pwd)/out:/outgoing grace335/pl-covidnet-train covidnet_train.py /incoming /outgoing
 
 Now the plugin should start to run. A sample output will be like this:
 
